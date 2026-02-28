@@ -5,9 +5,12 @@ dotenv.config();
 
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === "production"
+    ? { rejectUnauthorized: false }
+    : false,
 });
 
-// 🔥 Auto create table on startup
+// Auto create table
 export const initializeDatabase = async () => {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS "Contact" (
