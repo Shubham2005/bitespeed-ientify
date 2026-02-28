@@ -1,6 +1,7 @@
 import express from "express";
-import cors from "cors";
+const cors = require("cors");
 import dotenv from "dotenv";
+import identifyRouter from "./routes/identify.route";
 
 dotenv.config();
 
@@ -9,8 +10,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
+app.use("/identify", identifyRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
 });
