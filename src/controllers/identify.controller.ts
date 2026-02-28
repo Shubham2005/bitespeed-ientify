@@ -14,6 +14,7 @@ export const identify = async (req: Request, res: Response) => {
     const result = await identifyService(email, phoneNumber);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: "internal server error" });
-  }
+  console.error("Controller error:", error);
+  res.status(500).json({ error: "internal server error" });
+}
 };

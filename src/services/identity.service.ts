@@ -18,12 +18,12 @@ export const identifyService = async (
 
     if (matchResult.rows.length === 0) {
       const insertResult = await client.query(
-        `INSERT INTO "Contact"
-         (email, "phoneNumber", "linkPrecedence")
-         VALUES ($1, $2, 'primary')
-         RETURNING *`,
-        [email || null, phoneNumber || null]
-      );
+  `INSERT INTO "Contact"
+   (email, "phoneNumber", "linkPrecedence", "createdAt", "updatedAt")
+   VALUES ($1, $2, 'primary', NOW(), NOW())
+   RETURNING *`,
+  [email || null, phoneNumber || null]
+);
 
       await client.query("COMMIT");
 
@@ -80,11 +80,11 @@ export const identifyService = async (
       (phoneNumber && !existingPhones.includes(phoneNumber))
     ) {
       await client.query(
-        `INSERT INTO "Contact"
-         (email, "phoneNumber", "linkPrecedence", "linkedId")
-         VALUES ($1, $2, 'secondary', $3)`,
-        [email || null, phoneNumber || null, primary.id]
-      );
+  `INSERT INTO "Contact"
+   (email, "phoneNumber", "linkPrecedence", "linkedId", "createdAt", "updatedAt")
+   VALUES ($1, $2, 'secondary', $3, NOW(), NOW())`,
+  [email || null, phoneNumber || null, primary.id]
+);
     }
 
     const finalResult = await client.query(
